@@ -4,7 +4,8 @@ const ContainershipCore = require('./containership-core');
 const pkg = require('./package.json');
 const opts = require('./options');
 
-const _ = require('lodash');
+const _defaults = require('lodash.defaults');
+const _has = require('lodash.has');
 
 module.exports = function(options) {
     const core = new ContainershipCore({
@@ -13,16 +14,16 @@ module.exports = function(options) {
 
     core.version = pkg.version;
 
-    if(_.has(options, 'scheduler')) {
+    if(_has(options, 'scheduler')) {
         core.scheduler = options.scheduler;
-        _.defaults(opts, core.scheduler.options);
+        _defaults(opts, core.scheduler.options);
     } else {
         process.exit(1);
     }
 
-    if(_.has(options, 'api')) {
+    if(_has(options, 'api')) {
         core.api = options.api;
-        _.defaults(opts, core.api.options);
+        _defaults(opts, core.api.options);
     } else {
         process.exit(1);
     }

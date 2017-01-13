@@ -8,7 +8,9 @@ const Applications = require('./lib/applications');
 
 const constants = require('containership.core.constants');
 
-const _ = require('lodash');
+const _forEach = require('lodash.foreach');
+const _has = require('lodash.has');
+const _merge = require('lodash.merge');
 
 class ContainerShipCore {
     constructor(options) {
@@ -64,7 +66,7 @@ class ContainerShipCore {
 
     // loads and sets options
     load_options(options) {
-        options = _.merge(options, {
+        options = _merge(options, {
             praetor: {
                 leader_eligible: false
             },
@@ -80,15 +82,15 @@ class ContainerShipCore {
         options.legiond.network.cidr = options.cidr;
         options.legiond.network.public = options['legiond-scope'] == 'public';
 
-        if(_.has(options, 'legiond-interface')) {
+        if(_has(options, 'legiond-interface')) {
             options.legiond.network.interface = options['legiond-interface'];
         }
 
-        if(_.has(options, 'cluster-id')) {
+        if(_has(options, 'cluster-id')) {
             options.cluster_id = options['cluster-id'];
         }
 
-        if(_.has(options, 'node-id')) {
+        if(_has(options, 'node-id')) {
             options.legiond.network.id = options['node-id'];
         }
 
@@ -96,7 +98,7 @@ class ContainerShipCore {
             options.legiond.attributes.mode = 'leader';
             options.praetor.leader_eligible = true;
             options.legiond.attributes.tags = {};
-            _.forEach(options.tag, (tag) => {
+            _forEach(options.tag, (tag) => {
                 options.legiond.attributes.tags[tag.tag] = tag.value;
             });
             options.channels = [
@@ -105,7 +107,7 @@ class ContainerShipCore {
         } else {
             options.legiond.attributes.engines = {};
             options.legiond.attributes.tags = {};
-            _.forEach(options.tag, (tag) => {
+            _forEach(options.tag, (tag) => {
                 options.legiond.attributes.tags[tag.tag] = tag.value;
             });
             options.channels = [
@@ -132,7 +134,7 @@ class ContainerShipCore {
             snapshot_name: 'containership.snapshot'
         };
 
-        if(_.has(options, 'snapshot-location')) {
+        if(_has(options, 'snapshot-location')) {
             options.persistence.data_directory = options['snapshot-location'].substring(0, options['snapshot-location'].lastIndexOf('/'));
             options.persistence.snapshot_name = options['snapshot-location'].substring(options['snapshot-location'].lastIndexOf('/') + 1);
         }

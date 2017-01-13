@@ -1,6 +1,7 @@
 'use strict';
 
-const _ = require('lodash');
+const _keys = require('lodash.keys');
+const _rest = require('lodash.rest');
 const os = require('os');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
     'legiond-interface': {
         help: 'Interface over which node will communicate',
         metavar: 'INTERFACE',
-        choices: _.keys(os.networkInterfaces())
+        choices: _keys(os.networkInterfaces())
     },
 
     tag: {
@@ -35,7 +36,7 @@ module.exports = {
             };
 
             if(parts.length > 0)
-                tag.value = _.rest(parts).join('=');
+                tag.value = _rest(parts).join('=');
             else
                 tag.value = undefined;
 
